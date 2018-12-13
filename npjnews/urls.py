@@ -19,7 +19,7 @@ from django.urls import path, include
 from rest_framework import routers, serializers, viewsets
 
 # Serializers define the API representation.
-from apps.news.models import Category, Reporter, Publication, News
+from apps.news.models import Category, Reporter, Publication, Article
 
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
@@ -40,9 +40,9 @@ class PublicationSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
 
-class NewsSerializer(serializers.HyperlinkedModelSerializer):
+class ArticleSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = News
+        model = Article
         fields = '__all__'
 
 
@@ -62,9 +62,9 @@ class PublicationViewSet(viewsets.ModelViewSet):
     serializer_class = PublicationSerializer
 
 
-class NewsViewSet(viewsets.ModelViewSet):
-    queryset = News.objects.all()
-    serializer_class = NewsSerializer
+class ArticleViewSet(viewsets.ModelViewSet):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
 
 
 # Routers provide an easy way of automatically determining the URL conf.
@@ -72,7 +72,7 @@ router = routers.DefaultRouter()
 router.register('category', CategoryViewSet)
 router.register('reporter', ReporterViewSet)
 router.register('publication', PublicationViewSet)
-router.register('news', NewsViewSet)
+router.register('article', ArticleViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

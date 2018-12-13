@@ -34,7 +34,7 @@ class Publication(models.Model):
         ordering = ('title',)
 
 
-class News(models.Model):
+class Article(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     content = FroalaField()
     reporter = models.ForeignKey(Reporter, on_delete=models.CASCADE)
