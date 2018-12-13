@@ -16,8 +16,67 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from rest_framework import routers, serializers, viewsets
+
+# Serializers define the API representation.
+from apps.news.models import Category, Reporter, Publication, News
+
+
+class CategorySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+
+class ReporterSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Reporter
+        fields = '__all__'
+
+
+class PublicationSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Publication
+        fields = '__all__'
+
+
+class NewsSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = News
+        fields = '__all__'
+
+
+# ViewSets define the view behavior.
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class ReporterViewSet(viewsets.ModelViewSet):
+    queryset = Reporter.objects.all()
+    serializer_class = ReporterSerializer
+
+
+class PublicationViewSet(viewsets.ModelViewSet):
+    queryset = Publication.objects.all()
+    serializer_class = PublicationSerializer
+
+
+class NewsViewSet(viewsets.ModelViewSet):
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
+
+
+# Routers provide an easy way of automatically determining the URL conf.
+router = routers.DefaultRouter()
+router.register('category', CategoryViewSet)
+router.register('reporter', ReporterViewSet)
+router.register('publication', PublicationViewSet)
+router.register('news', NewsViewSet)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('froala_editor/', include('froala_editor.urls')),
-
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls'))
 ]
