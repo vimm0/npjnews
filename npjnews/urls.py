@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 # from django.urls import path, include
+from django.conf import settings
 
 from rest_framework import routers, serializers, viewsets
 
@@ -44,10 +45,14 @@ class PublicationSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
 
-class ArticleSerializer(serializers.HyperlinkedModelSerializer):
+class ArticleSerializer(serializers.ModelSerializer):
+    category = serializers.StringRelatedField(many=True)
+    reporter = serializers.StringRelatedField(many=False)
+    publications = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Article
-        fields = '__all__'
+        fields = ('title', 'content', 'reporter', 'publications', 'category', 'created', 'modified',)
 
 
 # ViewSets define the view behavior.
@@ -102,3 +107,10 @@ urlpatterns = [
     url('', include(router.urls)),
     url('api-auth/', include('rest_framework.urls'))
 ]
+
+# if settings.DEBUG:
+#     import debug_toolbar
+#
+#     urlpatterns = [
+#                       url(r'^__debug__/', include(debug_toolbar.urls)),
+#                   ] + urlpatterns
