@@ -20,6 +20,9 @@ from django.contrib import admin
 from rest_framework import routers, serializers, viewsets
 
 # Serializers define the API representation.
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
 from apps.news.models import Category, Reporter, Publication, Article
 
 
@@ -63,9 +66,27 @@ class PublicationViewSet(viewsets.ModelViewSet):
     serializer_class = PublicationSerializer
 
 
-class ArticleViewSet(viewsets.ModelViewSet):
+class ArticleViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+
+    @action(methods=['get'], detail=False)
+    def breaking_news(self, request):
+        try:
+            queryset = Article.objects.filter(category__pk=2)
+            data = ArticleSerializer(queryset, many=True, context={'request': request}).data
+            return Response(data)
+        except:
+            return Response(None)
+
+    @action(methods=['get'], detail=False)
+    def international_news(self, request):
+        try:
+            queryset = Article.objects.filter(category__pk=8)
+            data = ArticleSerializer(queryset, many=True, context={'request': request}).data
+            return Response(data)
+        except:
+            return Response(None)
 
 
 # Routers provide an easy way of automatically determining the URL conf.
