@@ -13,8 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url, include
 from django.contrib import admin
-from django.urls import path, include
+# from django.urls import path, include
 
 from rest_framework import routers, serializers, viewsets
 
@@ -75,8 +76,8 @@ router.register('publication', PublicationViewSet)
 router.register('article', ArticleViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('froala_editor/', include('froala_editor.urls')),
-    path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls'))
+    url('admin/', admin.site.urls),
+    url('froala_editor/', include('froala_editor.urls')),
+    url('', include(router.urls)),
+    url('api-auth/', include('rest_framework.urls'))
 ]

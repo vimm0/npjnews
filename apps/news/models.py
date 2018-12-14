@@ -3,7 +3,7 @@ from froala_editor.fields import FroalaField
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=255, blank=True, null=True)
+    title = models.CharField(max_length=255)
     description = FroalaField()
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -12,7 +12,7 @@ class Category(models.Model):
         return self.title
 
     class Meta:
-        ordering = ('title',)
+        ordering = ('created',)
 
 
 class Reporter(models.Model):
@@ -35,7 +35,7 @@ class Publication(models.Model):
 
 
 class Article(models.Model):
-    title = models.CharField(max_length=255, blank=True, null=True)
+    title = models.CharField(max_length=255)
     content = FroalaField()
     reporter = models.ForeignKey(Reporter, on_delete=models.CASCADE)
     publications = models.ManyToManyField(Publication)
