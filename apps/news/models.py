@@ -5,6 +5,7 @@ from froala_editor.fields import FroalaField
 class Category(models.Model):
     title = models.CharField(max_length=255)
     description = FroalaField()
+    cat_od = models.PositiveIntegerField(default=0, editable=True, blank=False, null=False)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -12,7 +13,7 @@ class Category(models.Model):
         return self.title
 
     class Meta:
-        ordering = ('created',)
+        ordering = ('cat_od',)
 
 
 class Reporter(models.Model):
