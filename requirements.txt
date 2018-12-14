@@ -2,3 +2,4 @@ django
 django-admin-sortable2
 django-froala-editor
 djangorestframework
+django-cors-headers
