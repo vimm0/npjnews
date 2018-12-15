@@ -17,8 +17,9 @@ from django.conf.urls import url, include
 from django.contrib import admin
 # from django.urls import path, include
 from django.conf import settings
+from django_filters.rest_framework import DjangoFilterBackend
 
-from rest_framework import routers, serializers, viewsets
+from rest_framework import routers, serializers, viewsets, generics
 
 # Serializers define the API representation.
 from rest_framework.decorators import action
@@ -65,6 +66,17 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     lookup_field = 'slug'
 
+    # @action(methods=['get'], detail=False)
+    # def fil(self, request):
+    #     import ipdb
+    #     ipdb.set_trace()
+    #     try:
+    #         queryset = Article.objects.filter(category__title='Breaking News')
+    #         data = ArticleSerializer(queryset, many=True, context={'request': request}).data
+    #         return Response(data)
+    #     except:
+    #         return Response(None)
+
 
 class ReporterViewSet(viewsets.ModelViewSet):
     queryset = Reporter.objects.all()
@@ -78,27 +90,11 @@ class PublicationViewSet(viewsets.ModelViewSet):
     lookup_field = 'slug'
 
 
-class ArticleViewSet(viewsets.ReadOnlyModelViewSet):
+class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-
-    @action(methods=['get'], detail=False)
-    def breaking_news(self, request):
-        try:
-            queryset = Article.objects.filter(category__title='Breaking News')
-            data = ArticleSerializer(queryset, many=True, context={'request': request}).data
-            return Response(data)
-        except:
-            return Response(None)
-
-    @action(methods=['get'], detail=False)
-    def international_news(self, request):
-        try:
-            queryset = Article.objects.filter(category__title='International News')
-            data = ArticleSerializer(queryset, many=True, context={'request': request}).data
-            return Response(data)
-        except:
-            return Response(None)
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('category__slug',)
 
 
 # Routers provide an easy way of automatically determining the URL conf.

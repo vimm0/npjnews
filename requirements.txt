@@ -4,3 +4,4 @@ django-froala-editor
 djangorestframework
 django-cors-headers
 ipdb
+django-filter
