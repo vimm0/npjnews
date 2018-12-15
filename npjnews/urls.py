@@ -27,28 +27,28 @@ from rest_framework.response import Response
 from apps.news.models import Category, Reporter, Publication, Article
 
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
 
 
-class ReporterSerializer(serializers.HyperlinkedModelSerializer):
+class ReporterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reporter
         fields = '__all__'
 
 
-class PublicationSerializer(serializers.HyperlinkedModelSerializer):
+class PublicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Publication
         fields = '__all__'
 
 
 class ArticleSerializer(serializers.ModelSerializer):
-    category = serializers.StringRelatedField(many=True)
-    reporter = serializers.StringRelatedField(many=False)
-    publications = serializers.StringRelatedField(many=True)
+    category = CategorySerializer(many=True)
+    reporter = ReporterSerializer(many=False)
+    publications = PublicationSerializer(many=True)
     date_url = serializers.SerializerMethodField('date_man')
 
     def date_man(self, obj):
@@ -63,16 +63,19 @@ class ArticleSerializer(serializers.ModelSerializer):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    lookup_field = 'slug'
 
 
 class ReporterViewSet(viewsets.ModelViewSet):
     queryset = Reporter.objects.all()
     serializer_class = ReporterSerializer
+    lookup_field = 'slug'
 
 
 class PublicationViewSet(viewsets.ModelViewSet):
     queryset = Publication.objects.all()
     serializer_class = PublicationSerializer
+    lookup_field = 'slug'
 
 
 class ArticleViewSet(viewsets.ReadOnlyModelViewSet):
