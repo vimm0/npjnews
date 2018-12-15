@@ -4,6 +4,7 @@ from froala_editor.fields import FroalaField
 
 class Category(models.Model):
     title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=300)
     description = FroalaField()
     cat_od = models.PositiveIntegerField(default=0, editable=True, blank=False, null=False)
     created = models.DateTimeField(auto_now_add=True)
@@ -17,16 +18,17 @@ class Category(models.Model):
 
 
 class Reporter(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=150)
     email = models.EmailField()
 
     def __str__(self):
-        return "%s %s" % (self.first_name, self.last_name)
+        return self.name
 
 
 class Publication(models.Model):
     title = models.CharField(max_length=30)
+    slug = models.SlugField(max_length=50)
 
     def __str__(self):
         return self.title
