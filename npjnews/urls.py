@@ -82,7 +82,7 @@ class ArticleViewSet(viewsets.ReadOnlyModelViewSet):
     @action(methods=['get'], detail=False)
     def breaking_news(self, request):
         try:
-            queryset = Article.objects.filter(category__pk=2)
+            queryset = Article.objects.filter(category__title='Breaking News')
             data = ArticleSerializer(queryset, many=True, context={'request': request}).data
             return Response(data)
         except:
@@ -91,7 +91,7 @@ class ArticleViewSet(viewsets.ReadOnlyModelViewSet):
     @action(methods=['get'], detail=False)
     def international_news(self, request):
         try:
-            queryset = Article.objects.filter(category__pk=8)
+            queryset = Article.objects.filter(category__title='International News')
             data = ArticleSerializer(queryset, many=True, context={'request': request}).data
             return Response(data)
         except:
