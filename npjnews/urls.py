@@ -49,10 +49,14 @@ class ArticleSerializer(serializers.ModelSerializer):
     category = serializers.StringRelatedField(many=True)
     reporter = serializers.StringRelatedField(many=False)
     publications = serializers.StringRelatedField(many=True)
+    date_url = serializers.SerializerMethodField('date_man')
+
+    def date_man(self, obj):
+        return str(obj.created.year) + '-' + str(obj.created.month) + '-' + str(obj.created.day)
 
     class Meta:
         model = Article
-        fields = ('title', 'content', 'reporter', 'publications', 'category', 'created', 'modified',)
+        fields = ('id', 'title', 'content', 'reporter', 'publications', 'category', 'created', 'modified', 'date_url')
 
 
 # ViewSets define the view behavior.
